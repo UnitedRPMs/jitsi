@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.jitsi.jitsi</id>
+  
+  <name>jitsi</name>
+  <summary>Open Source Video Calls And Chat</summary>
+  
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>LGPL-2.0-or-later</project_license>
+  
+  <description>
+    <p>
+      Jitsi is an audio/video Internet phone and instant messenger that supports some of the most popular instant messaging and telephony protocols such as SIP, Jabber/XMPP (and hence Facebook and Google Talk), AIM/ICQ, Yahoo! Messenger, RSS and counting. Jitsi is completely Open Source / Free Software, and is freely available under the terms of the GNU Lesser General Public License.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">jitsi.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://desktop.jitsi.org/wiki/pub/sip-communicator/screenshots/contact-list-big.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://desktop.jitsi.org/wiki/pub/sip-communicator/screenshots/contact-list2-big.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://desktop.jitsi.org/wiki/pub/sip-communicator/screenshots/confcall-big.png</image>
+    </screenshot>
+  </screenshots>
+</component>

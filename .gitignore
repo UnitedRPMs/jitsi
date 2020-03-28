@@ -1,0 +1,8 @@
+BUILD/*
+BUILDROOT/*
+RPMS/*
+SPECS/*
+SRPMS/*
+*.zip
+.directory
+*.rpm
