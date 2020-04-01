@@ -2,13 +2,13 @@
 %global debug_package %{nil}
 
 Name:		jitsi
-Version:	2.10.5550
-Release:	9%{dist}
+Version:	2.11.5633
+Release:	1%{dist}
 Summary:	Open Source Video Calls And Chat
 Group:		Applications/Communications
 License:	LGPLv2+
 URL:		https://jitsi.org/
-Source0:	https://download.jitsi.org/jitsi/src/%{name}-src-%{version}.zip
+Source0:	https://download.jitsi.org/jitsi/nightly/src/%{name}-src-%{version}.zip
 Source1:	jitsi.sh
 Source2:	jitsi.desktop
 Source3:	org.jitsi.jitsi.metainfo.xml
@@ -83,6 +83,9 @@ install -Dm 0644 %{S:3} %{buildroot}/%{_metainfodir}/org.jitsi.jitsi.metainfo.xm
 
 
 %changelog
+
+* Tue Mar 31 2020 David Va <davidva AT tuta DOT io> 2.11.5633-1
+- Updated to 2.11.5633
 
 * Fri Mar 27 2020 David Va <davidva AT tuta DOT io> 2.10.5550-9
 - Upstream
