@@ -3,7 +3,7 @@
 
 Name:		jitsi
 Version:	2.11.5633
-Release:	1%{dist}
+Release:	2%{dist}
 Summary:	Open Source Video Calls And Chat
 Group:		Applications/Communications
 License:	LGPLv2+
@@ -26,6 +26,7 @@ BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(alsa)
 
 Requires:	java-1.8.0-openjdk
+Requires:	ffmpeg3-libs
 
 
 %description
@@ -83,6 +84,9 @@ install -Dm 0644 %{S:3} %{buildroot}/%{_metainfodir}/org.jitsi.jitsi.metainfo.xm
 
 
 %changelog
+
+* Wed Jun 03 2020 David Va <davidva AT tuta DOT io> 2.11.5633-2
+- Added requires ffmpeg3-libs
 
 * Tue Mar 31 2020 David Va <davidva AT tuta DOT io> 2.11.5633-1
 - Updated to 2.11.5633
