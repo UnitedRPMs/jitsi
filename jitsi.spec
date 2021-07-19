@@ -2,6 +2,10 @@
 %global debug_package %{nil}
 %global java_home /usr/lib/jvm/java-1.8.0-openjdk
 
+%global commit0 c81e58f1a9c63b60f6ebbccfca113906472b186b
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global gver .git%{shortcommit0}
+
 Name:		jitsi
 Version:	2.11.5633
 Release:	3%{dist}
@@ -9,7 +13,7 @@ Summary:	Open Source Video Calls And Chat
 Group:		Applications/Communications
 License:	LGPLv2+
 URL:		https://jitsi.org/
-Source0:	https://download.jitsi.org/jitsi/nightly/src/%{name}-src-%{version}.zip
+Source0:        https://github.com/jitsi/jitsi/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 Source1:	jitsi.sh
 Source2:	jitsi.desktop
 Source3:	org.jitsi.jitsi.metainfo.xml
@@ -40,7 +44,7 @@ under the terms of the GNU Lesser General Public License.
 
 
 %prep
-%setup -q -n %{name}
+%autosetup -n jitsi-%{commit0} 
 
 %build
 
@@ -87,7 +91,6 @@ install -Dm 0644 %{S:3} %{buildroot}/%{_metainfodir}/org.jitsi.jitsi.metainfo.xm
 %changelog
 * Sat Jul 17 2021 Sérgio Basto <sergio@serjux.com> - 2.11.5633-3
 - Fix build on F34+
-
 
 * Wed Jun 03 2020 David Va <davidva AT tuta DOT io> 2.11.5633-2
 - Added requires ffmpeg3-libs
