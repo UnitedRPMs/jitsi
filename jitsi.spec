@@ -95,7 +95,7 @@ install -Dm 0644 %{S:3} %{buildroot}/%{_metainfodir}/org.jitsi.jitsi.metainfo.xm
 * Thu Aug 12 2021 David Va <davidva AT tuta DOT io> 2.11.5633-5
 - Launcher improvements and splash activation
 
-* Fri Aug 13 2021 Sérgio Basto <sergio@serjux.com> - 2.11.5633-4
+* Wed Aug 11 2021 Sérgio Basto <sergio@serjux.com> - 2.11.5633-4
 - fix native libraries and  osgi.wiring.package;
   (&(osgi.wiring.package=com.sun.jna)(version>=5.5.0)(\!(version>=6.0.0)))]]
   dropping the last commit
