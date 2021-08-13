@@ -19,7 +19,7 @@ Source2:	jitsi.desktop
 Source3:	org.jitsi.jitsi.metainfo.xml
 
 BuildRequires:	ant
-#BuildRequires:	git
+BuildRequires:	git
 BuildRequires:	java-1.8.0-openjdk-devel
 #BuildRequires:	javapackages-tools
 
