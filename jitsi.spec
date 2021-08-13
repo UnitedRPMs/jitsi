@@ -1,14 +1,14 @@
-%global __provides_exclude_from	^(%{_libdir}/jitsi/lib/native/.*\\.so|%{_javadir}/%{name}/.*)$
+%global __provides_exclude_from	^(%{_libdir}/jitsi/lib/native/.*\\.so|%{_libdir}/jitsi/sc-bundles/.*\\.jar)$
 %global debug_package %{nil}
 %global java_home /usr/lib/jvm/java-1.8.0-openjdk
 
-%global commit0 c81e58f1a9c63b60f6ebbccfca113906472b186b
+%global commit0 bde1701b1c8582a046ab203fa0cfd108fbf3b356
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 Name:		jitsi
 Version:	2.11.5633
-Release:	3%{dist}
+Release:	4%{dist}
 Summary:	Open Source Video Calls And Chat
 Group:		Applications/Communications
 License:	LGPLv2+
@@ -19,19 +19,18 @@ Source2:	jitsi.desktop
 Source3:	org.jitsi.jitsi.metainfo.xml
 
 BuildRequires:	ant
-BuildRequires:	git
+#BuildRequires:	git
 BuildRequires:	java-1.8.0-openjdk-devel
-BuildRequires:	javapackages-tools
+#BuildRequires:	javapackages-tools
 
-BuildRequires:	pkgconfig(x11)
-BuildRequires:	pkgconfig(xtst)
-BuildRequires:	pkgconfig(dbus-1)
-BuildRequires:	pkgconfig(xscrnsaver)
-BuildRequires:	pkgconfig(gtk+-2.0)
-BuildRequires:	pkgconfig(alsa)
+#BuildRequires:	pkgconfig(x11)
+#BuildRequires:	pkgconfig(xtst)
+#BuildRequires:	pkgconfig(dbus-1)
+#BuildRequires:	pkgconfig(xscrnsaver)
+#BuildRequires:	pkgconfig(gtk+-2.0)
+#BuildRequires:	pkgconfig(alsa)
 
 Requires:	java-1.8.0-openjdk
-Requires:	ffmpeg3-libs
 
 
 %description
@@ -44,7 +43,7 @@ under the terms of the GNU Lesser General Public License.
 
 
 %prep
-%autosetup -n jitsi-%{commit0} 
+%autosetup -n jitsi-%{commit0}
 
 %build
 
@@ -56,7 +55,9 @@ sed -i "s/0\.build\.by\.SVN/build.%{version}/" src/net/java/sip/communicator/imp
 %install
   find lib/ lib/bundle/ -maxdepth 1 -type f -exec install -Dm644 {} "%{buildroot}/%{_libdir}/%{name}/"{} \;
   shopt -sq extglob
-  find lib/native/linux$(sed 's/_/-/g' <<<${CARCH/#*(i?86|x86)/})/ -maxdepth 1 -type f -execdir install -Dm644 {} "%{buildroot}/%{_libdir}/%{name}/lib/native/"{} \;
+  CARCH=$(uname -m)
+  CARCH=$(sed 's/_/-/g' <<<${CARCH/#*(i?86|x86)/})
+  find lib/native/linux${CARCH}/ -maxdepth 1 -type f -execdir install -Dm644 {} "%{buildroot}/%{_libdir}/%{name}/lib/native/"{} \;
   find sc-bundles/{,os-specific/linux/} -maxdepth 1 -type f -execdir install -Dm644 {} "%{buildroot}/%{_libdir}/%{name}/sc-bundles/"{} \;
   install -Dm755 "%{S:1}" "%{buildroot}/%{_bindir}/%{name}"
   install -Dm644 "%{S:2}" "%{buildroot}/%{_datadir}/applications/%{name}.desktop"
@@ -69,9 +70,8 @@ sed -i "s/0\.build\.by\.SVN/build.%{version}/" src/net/java/sip/communicator/imp
   popd
 
 # copy the documentation
-mkdir -p %{buildroot}/%{_mandir}/man1/%{name}.1
-gzip resources/install/debian/jitsi.1.tmpl
-mv -f resources/install/debian/jitsi.1.tmpl.gz %{buildroot}/%{_mandir}/man1/jitsi.1.gz
+mkdir -p %{buildroot}/%{_mandir}/man1/
+mv -f resources/install/debian/jitsi.1.tmpl %{buildroot}/%{_mandir}/man1/jitsi.1
 
 # Appdata
 install -Dm 0644 %{S:3} %{buildroot}/%{_metainfodir}/org.jitsi.jitsi.metainfo.xml
@@ -89,6 +89,11 @@ install -Dm 0644 %{S:3} %{buildroot}/%{_metainfodir}/org.jitsi.jitsi.metainfo.xm
 
 
 %changelog
+* Fri Aug 13 2021 Sérgio Basto <sergio@serjux.com> - 2.11.5633-4
+- fix native libraries and  osgi.wiring.package;
+  (&(osgi.wiring.package=com.sun.jna)(version>=5.5.0)(\!(version>=6.0.0)))]]
+  dropping the last commit
+
 * Sat Jul 17 2021 Sérgio Basto <sergio@serjux.com> - 2.11.5633-3
 - Fix build on F34+
 
