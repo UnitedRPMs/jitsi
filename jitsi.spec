@@ -8,7 +8,7 @@
 
 Name:		jitsi
 Version:	2.11.5633
-Release:	4%{dist}
+Release:	5%{dist}
 Summary:	Open Source Video Calls And Chat
 Group:		Applications/Communications
 License:	LGPLv2+
@@ -17,6 +17,7 @@ Source0:        https://github.com/jitsi/jitsi/archive/%{commit0}.tar.gz#/%{name
 Source1:	jitsi.sh
 Source2:	jitsi.desktop
 Source3:	org.jitsi.jitsi.metainfo.xml
+Source4:	splash.gif
 
 BuildRequires:	ant
 BuildRequires:	git
@@ -61,6 +62,7 @@ sed -i "s/0\.build\.by\.SVN/build.%{version}/" src/net/java/sip/communicator/imp
   find sc-bundles/{,os-specific/linux/} -maxdepth 1 -type f -execdir install -Dm644 {} "%{buildroot}/%{_libdir}/%{name}/sc-bundles/"{} \;
   install -Dm755 "%{S:1}" "%{buildroot}/%{_bindir}/%{name}"
   install -Dm644 "%{S:2}" "%{buildroot}/%{_datadir}/applications/%{name}.desktop"
+  install -Dm644 "%{S:4}" "%{buildroot}/%{_libdir}/%{name}/"
 
 # copy the menu icons
   pushd "resources/install/debian/"
@@ -89,6 +91,10 @@ install -Dm 0644 %{S:3} %{buildroot}/%{_metainfodir}/org.jitsi.jitsi.metainfo.xm
 
 
 %changelog
+
+* Thu Aug 12 2021 David Va <davidva AT tuta DOT io> 2.11.5633-5
+- Launcher improvements and splash activation
+
 * Fri Aug 13 2021 Sérgio Basto <sergio@serjux.com> - 2.11.5633-4
 - fix native libraries and  osgi.wiring.package;
   (&(osgi.wiring.package=com.sun.jna)(version>=5.5.0)(\!(version>=6.0.0)))]]

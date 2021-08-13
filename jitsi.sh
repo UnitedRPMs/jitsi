@@ -1,25 +1,36 @@
 #!/usr/bin/bash
 
-CLIENTARGS=""
-uname -m | grep i686 && CLIENTARGS="-client -Xmx256m"
+# Get architecture
+ARCH=`uname -m | sed -e s/x86_64/64/ -e s/i.86/32/`
+
+JAVA_HOME="/usr/lib/jvm/jre-1.8.0-openjdk"
 
 if [[ -n ${JAVA_HOME} ]]; then
-  JAVABIN="${JAVA_HOME}/bin/java"
+  javabin="${JAVA_HOME}/bin/java"
 else
-  JAVABIN="java"
+  javabin=`which java`
 fi
 
-if ! ${JAVABIN} -version 2>&1 | grep version | grep -q 1.8; then
-  if command -v zenity > /dev/null; then
-    zenity --error --no-wrap --text="Your java version is $(${JAVABIN} -version 2>&1 | grep version) but you need Java JRE/JDK 1.8\nPlease install Java 1.8 or set your PATH to the right binary\nMore info: https://docs.fedoraproject.org/en-US/quick-docs/installing-java/"
-  elif command -v kdialog > /dev/null; then
-    kdialog --sorry "Your java version is $(${JAVABIN} -version 2>&1 | grep version) but you need Java JRE/JDK 1.8\nPlease install Java 1.8 or set your PATH to the right binary\nMore info: https://docs.fedoraproject.org/en-US/quick-docs/installing-java/" --title="Invalid Java version"
-  elif command -v xmessage > /dev/null; then
-    xmessage -center "$(echo -e "Your java version is $(${JAVABIN} -version 2>&1 | grep version) but you need Java JRE/JDK 1.8\nPlease install Java 1.8 or set your PATH to the right binary\nMore info: https://docs.fedoraproject.org/en-US/quick-docs/installing-java/")"
-  else
-    echo -e "Your java version is $(${JAVABIN} -version 2>&1 | grep version) but you need Java JRE/JDK 1.8\nPlease install Java 1.8 or set your PATH to the right binary\nMore info: https://docs.fedoraproject.org/en-US/quick-docs/installing-java/"
+# Additionnal JVM arguments
+CLIENTARGS=""
+
+if [ $ARCH -eq 32 ]
+then
+    CLIENTARGS="-client -Xmx256m"
+fi
+
+show_splash=true
+for arg in "$@" ; do
+  if [ "$arg" = "--splash=no" ] ; then
+    show_splash=false
+  elif [ "$arg" = "--splash=yes" ] ; then
+    show_splash=true
   fi
-  exit 1
+done
+
+SPLASH_ARG=""
+if $show_splash ; then
+    SPLASH_ARG="-splash:splash.gif"
 fi
 
 if [ `getconf LONG_BIT` = "64" ]; then
@@ -27,14 +38,17 @@ SCDIR=/usr/lib64/jitsi
 else
 SCDIR=/usr/lib/jitsi
 fi
-LIBPATH="${SCDIR}/lib"
-CLASSPATH="${LIBPATH}/felix.jar:${SCDIR}/sc-bundles/sc-launcher.jar:${SCDIR}/sc-bundles/util.jar:${SCDIR}/sc-bundles/dnsjava.jar:${LIBPATH}"
-FELIX_CONFIG="${LIBPATH}/felix.client.run.properties"
-LOG_CONFIG="${LIBPATH}/logging.properties"
-COMMAND="${JAVABIN} ${CLIENTARGS} -classpath ${CLASSPATH} -Djna.library.path=${LIBPATH}/native -Dfelix.config.properties=file:${FELIX_CONFIG} -Djava.util.logging.config.file=${LOG_CONFIG} net.java.sip.communicator.launcher.SIPCommunicator"
 
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${LIBPATH}/native"
+JITSI_COMMON_DIR=/usr/lib64/jitsi/sc-bundles
+LIBPATH=$SCDIR/lib
+CLASSPATH=$LIBPATH/felix.jar:$SCDIR/sc-bundles/dnsjava.jar:$SCDIR/sc-bundles/sc-launcher.jar:$JITSI_COMMON_DIR/util.jar:$LIBPATH
+FELIX_CONFIG=$LIBPATH/felix.client.run.properties
+LOG_CONFIG=$LIBPATH/logging.properties
+COMMAND="$javabin $CLIENTARGS -classpath $CLASSPATH -Djna.library.path=$SCDIR/lib/native -Dfelix.config.properties=file:$FELIX_CONFIG -Djava.util.logging.config.file=$LOG_CONFIG $SPLASH_ARG -Dnet.java.sip.communicator.SC_HOME_DIR_NAME=.jitsi net.java.sip.communicator.launcher.SIPCommunicator"
 
-cd "${SCDIR}"
+# set add LIBPATH to LD_LIBRARY_PATH for any sc natives (e.g. jmf .so's)
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$SCDIR/lib/native"
 
-exec ${COMMAND} $*
+cd $SCDIR
+
+exec $COMMAND $*
