@@ -39,7 +39,7 @@ else
 SCDIR=/usr/lib/jitsi
 fi
 
-JITSI_COMMON_DIR=/usr/lib64/jitsi/sc-bundles
+JITSI_COMMON_DIR=$SCDIR/sc-bundles
 LIBPATH=$SCDIR/lib
 CLASSPATH=$LIBPATH/felix.jar:$SCDIR/sc-bundles/dnsjava.jar:$SCDIR/sc-bundles/sc-launcher.jar:$JITSI_COMMON_DIR/util.jar:$LIBPATH
 FELIX_CONFIG=$LIBPATH/felix.client.run.properties
