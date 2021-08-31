@@ -32,7 +32,7 @@ BuildRequires:	java-1.8.0-openjdk-devel
 #BuildRequires:	pkgconfig(alsa)
 
 Requires:	java-1.8.0-openjdk
-
+Requires: ffmpeg3-libs
 
 %description
 Jitsi is an audio/video Internet phone and instant messenger that
