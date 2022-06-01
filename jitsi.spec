@@ -8,7 +8,7 @@
 
 Name:		jitsi
 Version:	2.11.5633
-Release:	5%{dist}
+Release:	6%{dist}
 Summary:	Open Source Video Calls And Chat
 Group:		Applications/Communications
 License:	LGPLv2+
@@ -32,7 +32,7 @@ BuildRequires:	java-1.8.0-openjdk-devel
 #BuildRequires:	pkgconfig(alsa)
 
 Requires:	java-1.8.0-openjdk
-Requires: ffmpeg3-libs
+Requires:	ffmpeg3-libs
 
 %description
 Jitsi is an audio/video Internet phone and instant messenger that
@@ -91,6 +91,9 @@ install -Dm 0644 %{S:3} %{buildroot}/%{_metainfodir}/org.jitsi.jitsi.metainfo.xm
 
 
 %changelog
+
+* Wed Jun 01 2022 David Va <davidva AT tuta DOT io> 2.11.5633-6
+- Rebuilt 
 
 * Thu Aug 12 2021 David Va <davidva AT tuta DOT io> 2.11.5633-5
 - Launcher improvements and splash activation
